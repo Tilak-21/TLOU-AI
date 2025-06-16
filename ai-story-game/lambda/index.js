@@ -1,4 +1,6 @@
 const https = require('https');
+require('dotenv').config();
+
 
 exports.handler = async (event) => {
   // Handle CORS preflight
@@ -45,7 +47,7 @@ exports.handler = async (event) => {
     method: 'POST',
     timeout: 15000, // 15 sec timeout
     headers: {
-      'Authorization': 'Bearer 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',
+      'Authorization': `Bearer ${process.env.API_KEY}`,
       'Content-Type': 'application/json'
     }
   };
