@@ -1,0 +1,2 @@
+git rm -r --cached TLOU/ai-story-game/terraform/.terraform/
+echo ".terraform/" >> TLOU/ai-story-game/terraform/.gitignore
