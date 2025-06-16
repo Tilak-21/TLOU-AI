@@ -33,8 +33,9 @@ This is a text-based, AI-driven survival game inspired by the post-apocalyptic w
 
 - Fully AI-generated interactive story
 - Player stat tracking and simple death conditions
-- Save and load game state from browser storage
+- Immersive world-building with tone-matching responses (horror + humor)
 - Context-aware narrative progression using AI
+- Dynamic aging system that impacts game outcome
 
 ### Limitations
 
