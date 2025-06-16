@@ -8,19 +8,52 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 </head>
 <body>
+
+  <!-- Intro Overlay -->
+  <div id="introScreen" class="intro-screen">
+    <div class="intro-content">
+      <pre id="introText">
+THE LAST OF US: SURVIVOR STORY
+
+The year is 2025. Over a decade has passed since the outbreak began in 2014.
+What remains of humanity now hides in the shadows of a ruined world.
+
+You are a 14-year-old survivor. The infected roam freely. Trust is scarce.
+
+Your goal: survive.
+Your tools: instinct, wit, and the will to endure.
+
+How to play:
+• Type commands like “look around”, “search backpack”, or “speak to the figure”.
+• The AI reacts and shapes your story.
+• Your health, energy, and age change based on your choices.
+• Make it through 10+ prompts to uncover what’s left of hope.
+      </pre>
+      <button id="startBtn">Start Game</button>
+    </div>
+  </div>
+
+  <!-- Main Game Container -->
   <div class="container">
     <h1 id="gameTitle">The Last of Us</h1>
-    <div id="stats"></div>
+    
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div id="stats"></div>
+      <button id="infoBtn" title="Game Info" style="margin-left: 10px;">Game Info</button>
+    </div>
+
     <div id="story">
       <p>Welcome survivor. Your journey begins here...</p>
     </div>
+
     <form id="inputForm">
       <input type="text" id="playerInput" placeholder="What do you do next?" required />
       <button type="submit">Continue</button>
     </form>
-    <button id="saveBtn">Save Game</button>
-    <button id="loadBtn">Load Game</button>
+
+    
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>

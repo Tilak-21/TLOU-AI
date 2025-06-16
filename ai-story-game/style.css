@@ -91,3 +91,118 @@ button:hover {
   text-transform: uppercase;
   text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
 }
+
+.intro-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(20, 20, 20, 0.95);
+  color: #e0e0e0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  text-align: left;
+  overflow-y: auto;
+}
+
+.intro-screen pre {
+  white-space: pre-wrap;
+  font-family: 'Courier New', monospace;
+  font-size: 1rem;
+  max-width: 600px;
+}
+
+#startBtn {
+  margin-top: 20px;
+  padding: 10px 25px;
+  font-size: 1rem;
+  background-color: #c22e2e;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+/* Info button in corner */
+.info-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 1100;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .intro-screen pre {
+    font-size: 0.95rem;
+  }
+
+  #startBtn {
+    width: 80%;
+    font-size: 1rem;
+  }
+
+  #infoBtn {
+    font-size: 0.9rem;
+    padding: 4px 8px;
+    margin-left: 6px;
+  }
+
+}
+
+.intro-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.95);
+  color: #fff;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  padding: 20px;
+}
+
+.intro-content {
+  max-width: 600px;
+  width: 100%;
+  background: #111;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #000;
+}
+
+#infoBtn {
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 4px 10px;
+  margin-left: 10px;
+  background-color: #444;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  height: 100%; /* match stats bar height */
+  transition: background-color 0.2s ease;
+}
+#infoBtn:hover {
+  background-color: #666;
+}
+
+

@@ -30,7 +30,7 @@ exports.handler = async (event) => {
     messages: [
       {
         role: "system",
-        content: "You are a horror-action narrator in a post-apocalyptic wasteland like The Last of Us. I am playing as Ellie, a 14-year old. You are humorous, immersive, and fun. Respond narratively. Make it engaging and entertaining. Keep responses concise."
+        content: "You are a horror-action narrator in a post-apocalyptic wasteland like The Last of Us. I am playing as Ellie, a 14-year old. You are humorous, immersive, and fun. Respond narratively. Make it engaging and entertaining. Keep responses concise dont exceed 5 sentences per respons. Try to keep it concise."
       },
       {
         role: "user",

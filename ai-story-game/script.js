@@ -7,8 +7,16 @@ const statsEl = document.getElementById('stats');
 const storyDiv = document.getElementById('story');
 const inputField = document.getElementById('playerInput');
 const form = document.getElementById('inputForm');
-const saveBtn = document.getElementById('saveBtn');
-const loadBtn = document.getElementById('loadBtn');
+const introScreen = document.getElementById('introScreen');
+const startBtn = document.getElementById('startBtn');
+const infoToggle = document.getElementById('infoToggle');
+
+if (infoToggle && introScreen) {
+  infoToggle.addEventListener('click', () => {
+    introScreen.style.display = 'flex'; // restore overlay
+  });
+}
+
 
 function updateStats() {
   statsEl.innerHTML = `❤️ Health: ${health} | ⚡ Energy: ${energy} | 🎂 Age: ${age}`;
@@ -16,11 +24,22 @@ function updateStats() {
 
 updateStats();
 
+if (startBtn && introScreen) {
+  startBtn.addEventListener('click', () => {
+    introScreen.style.display = 'none';
+
+  });
+}
+
 form.addEventListener('submit', async function (e) {
   e.preventDefault();
 
   const playerInput = inputField.value.trim();
   if (!playerInput) return;
+
+  
+
+
 
   storyLog.push(`> ${playerInput}`);
   const userEntry = document.createElement('p');
@@ -29,10 +48,7 @@ form.addEventListener('submit', async function (e) {
   inputField.value = '';
 
   const recentContext = `
-You are a humorous AI narrator in a post-apocalyptic survival game.
-The player is 14 years old, facing danger, scavenging, and trying to survive.
-Respond narratively, no questions, no instructions. Make it immersive and fun.
-
+You are a horror-action narrator in a post-apocalyptic world of The Last of Us. I am playing as Ellie, a 14-year old. You are humorous, immersive, and fun. Respond narratively. Make it engaging and entertaining. Keep responses short dont exceed 5 sentences per response.
 Recent story:
 ${storyLog.slice(-3).join('\n')}
 `;
@@ -58,12 +74,10 @@ ${storyLog.slice(-3).join('\n')}
     const data = await response.json();
     const aiReply = data.response || '...';
     console.log('AI response:', aiReply);
-    if (!aiReply) {
-      throw new Error('No response from AI');
-    }
+    if (!aiReply) throw new Error('No response from AI');
     storyLog.push(aiReply);
 
-    // Remove loading and add response
+    // Remove loading and add AI reply
     storyDiv.removeChild(loadingEl);
     const aiEl = document.createElement('p');
     aiEl.textContent = aiReply;
@@ -93,23 +107,12 @@ ${storyLog.slice(-3).join('\n')}
   }
 });
 
-saveBtn.addEventListener('click', () => {
-  localStorage.setItem('storyLog', JSON.stringify(storyLog));
-  localStorage.setItem('stats', JSON.stringify({ health, energy, age }));
-});
 
-loadBtn.addEventListener('click', () => {
-  const savedLog = JSON.parse(localStorage.getItem('storyLog')) || [];
-  const savedStats = JSON.parse(localStorage.getItem('stats')) || {};
-  storyDiv.innerHTML = '';
-  savedLog.forEach(p => {
-    const el = document.createElement('p');
-    el.textContent = p;
-    storyDiv.appendChild(el);
+
+const infoBtn = document.getElementById('infoBtn');
+if (infoBtn && introScreen) {
+  infoBtn.addEventListener('click', () => {
+    introScreen.style.display = 'flex';
   });
-  storyLog = savedLog;
-  health = savedStats.health || 100;
-  energy = savedStats.energy || 100;
-  age = savedStats.age || 14; // fixed to match initial age
-  updateStats();
-});
+}
+
