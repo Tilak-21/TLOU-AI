@@ -1,7 +1,7 @@
 let storyLog = [];
 let health = 100;
 let energy = 100;
-let age = 14; 
+let age = 14;
 
 const statsEl = document.getElementById('stats');
 const storyDiv = document.getElementById('story');
@@ -28,7 +28,20 @@ form.addEventListener('submit', async function (e) {
   storyDiv.appendChild(userEntry);
   inputField.value = '';
 
-  const recentContext = storyLog.slice(-3).join('\n');
+  const recentContext = `
+You are a humorous AI narrator in a post-apocalyptic survival game.
+The player is 14 years old, facing danger, scavenging, and trying to survive.
+Respond narratively, no questions, no instructions. Make it immersive and fun.
+
+Recent story:
+${storyLog.slice(-3).join('\n')}
+`;
+
+  // Show loading
+  const loadingEl = document.createElement('p');
+  loadingEl.textContent = '[Thinking...]';
+  storyDiv.appendChild(loadingEl);
+  storyDiv.scrollTop = storyDiv.scrollHeight;
 
   try {
     const apiURL = 'https://lgwy872242.execute-api.us-west-2.amazonaws.com/default/aiTextHandler';
@@ -37,15 +50,21 @@ form.addEventListener('submit', async function (e) {
     const response = await fetch(apiURL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ input: `${recentContext}` })
+      body: JSON.stringify({ input: recentContext })
     });
 
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
     const data = await response.json();
     const aiReply = data.response || '...';
+    console.log('AI response:', aiReply);
+    if (!aiReply) {
+      throw new Error('No response from AI');
+    }
     storyLog.push(aiReply);
 
+    // Remove loading and add response
+    storyDiv.removeChild(loadingEl);
     const aiEl = document.createElement('p');
     aiEl.textContent = aiReply;
     storyDiv.appendChild(aiEl);
@@ -67,6 +86,7 @@ form.addEventListener('submit', async function (e) {
 
   } catch (err) {
     console.error('Fetch error:', err);
+    storyDiv.removeChild(loadingEl);
     const errorMsg = document.createElement('p');
     errorMsg.textContent = 'An error occurred. Try again later.';
     storyDiv.appendChild(errorMsg);
@@ -90,26 +110,6 @@ loadBtn.addEventListener('click', () => {
   storyLog = savedLog;
   health = savedStats.health || 100;
   energy = savedStats.energy || 100;
-  age = savedStats.age || 25;
+  age = savedStats.age || 14; // fixed to match initial age
   updateStats();
 });
-
-const mapEl = document.getElementById('map');
-const locations = ['Seattle', 'Los Angeles', 'San Francisco', 'Phoenix', 'Las Vegas'];
-let currentLocationIndex = 0;
-
-function updateMap() {
-  const display = locations.map((loc, i) => i === currentLocationIndex ? `[${loc}]` : loc).join(' → ');
-  mapEl.innerHTML = `📍 Current Route: ${display}`;
-}
-
-updateMap();
-
-function travel(direction) {
-  if (direction === 'next' && currentLocationIndex < locations.length - 1) {
-    currentLocationIndex++;
-  } else if (direction === 'prev' && currentLocationIndex > 0) {
-    currentLocationIndex--;
-  }
-  updateMap();
-}

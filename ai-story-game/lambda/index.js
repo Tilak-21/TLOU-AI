@@ -1,7 +1,8 @@
 const https = require('https');
 
 exports.handler = async (event) => {
-  if (event.requestContext.http.method === 'OPTIONS') {
+  // Handle CORS preflight
+  if (event.requestContext?.http?.method === 'OPTIONS') {
     return {
       statusCode: 200,
       headers: {
@@ -13,14 +14,28 @@ exports.handler = async (event) => {
     };
   }
 
-  const body = JSON.parse(event.body);
-  const userInput = body.input || "Start a new story.";
+  let userInput = "Start a new story.";
+  try {
+    const body = JSON.parse(event.body);
+    if (body?.input) userInput = body.input;
+  } catch (e) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: "Invalid JSON input." })
+    };
+  }
 
   const payload = JSON.stringify({
-    model: "mistralai/mistral-7b-instruct", // or try `meta-llama/llama-3-8b-instruct`
+    model: "mistralai/mistral-7b-instruct",
     messages: [
-      { role: "system", content: "You are a horror-action narrator in a post-apocalyptic wasteland of the game The last of us. (keep responses short). I am in position of elle, but ask me my name and use that throughout." },
-      { role: "user", content: userInput }
+      {
+        role: "system",
+        content: "You are a horror-action narrator in a post-apocalyptic wasteland like The Last of Us. I am playing as Ellie, a 14-year old. You are humorous, immersive, and fun. Respond narratively. Make it engaging and entertaining. Keep responses concise."
+      },
+      {
+        role: "user",
+        content: userInput
+      }
     ]
   });
 
@@ -28,8 +43,9 @@ exports.handler = async (event) => {
     hostname: 'openrouter.ai',
     path: '/api/v1/chat/completions',
     method: 'POST',
+    timeout: 15000, // 15 sec timeout
     headers: {
-      'Authorization': 'Bearer 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',
+      'Authorization': 'Bearer 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',
       'Content-Type': 'application/json'
     }
   };
@@ -39,9 +55,11 @@ exports.handler = async (event) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
+        console.log("Raw AI response:", data);
         try {
           const parsed = JSON.parse(data);
           const reply = parsed.choices?.[0]?.message?.content || '...';
+          
           resolve({
             statusCode: 200,
             headers: {
@@ -67,9 +85,15 @@ exports.handler = async (event) => {
       });
     });
 
+    req.on('timeout', () => {
+      req.destroy();
+      resolve({
+        statusCode: 504,
+        body: JSON.stringify({ error: "Request timed out." })
+      });
+    });
+
     req.write(payload);
     req.end();
   });
 };
-
-
