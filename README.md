@@ -2,6 +2,9 @@
 
 This is a text-based, AI-driven survival game inspired by the post-apocalyptic world of The Last of Us. The player interacts with the game through natural language prompts, and the game responds with AI-generated narrative content. The objective is to survive and explore the wasteland while managing stats such as health, energy, and age.
 
+#Temporary Demo Link
+https://d1u42gs4migrv6.cloudfront.net/
+
 ## Setup Instructions
 
 1. Clone this repository
